@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>buzzly</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f4f4f4;
+    margin: 0;
+}
+
+/* Top bar */
+.topbar {
+    background: blue;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Plus button */
+.add-btn {
+    font-size: 25px;
+    cursor: pointer;
+    background: white;
+    color: blue;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+}
+
+/* Feed */
+.container {
+    width: 60%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+/* Posts */
+.post {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+/* Popup form */
+.popup {
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+input, textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+}
+
+button {
+    padding: 8px 15px;
+    background: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+</style>
+
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+    <h2>(buzzly)Post Feed</h2>
+    <div class="add-btn" onclick="openForm()">+</div>
+</div>
+
+<!-- Posts -->
+<div class="container" id="posts">
+
+    <!-- Example posts -->
+    <div class="post">
+        <h3>Welcome!</h3>
+        <p>hi i am alyaan the ceo 🎉</p>
+    </div>
+
+    <div class="post">
+        <h3></h3>
+        <p>This is another sample post.</p>
+    </div>
+
+</div>
+
+<!-- Popup form -->
+<div class="popup" id="popup">
+    <h3>New Post</h3>
+    <input type="text" id="title" placeholder="Title">
+    <textarea id="content" placeholder="Write something..."></textarea>
+    <button onclick="addPost()">Post</button>
+    <button onclick="closeForm()">Cancel</button>
+</div>
+
+<script>
+function openForm() {
+    document.getElementById("popup").style.display = "block";
+}
+
+function closeForm() {
+    document.getElementById("popup").style.display = "none";
+}
+
+function addPost() {
+    let title = document.getElementById("title").value;
+    let content = document.getElementById("content").value;
+
+    if (title === "" || content === "") {
+        alert("Fill everything!");
+        return;
+    }
+
+    let post = document.createElement("div");
+    post.className = "post";
+    post.innerHTML = "<h3>" + title + "</h3><p>" + content + "</p>";
+
+    document.getElementById("posts").prepend(post);
+
+    closeForm();
+
+    document.getElementById("title").value = "";
+    document.getElementById("content").value = "";
+}
+</script>
+
+</body>
+</html>
+<label for="imageUpload">Add an image for the post:</label>
+<input type="file" id="imageUpload" name="image" accept="image/*">
+<title>buzzly</title>
+google-site-verification: google46500503ea1e4c71.html
+
