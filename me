@@ -1,0 +1,192 @@
+html<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Buzzly</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: radial-gradient(circle at top, #1b1b2f, #0f0f1a);
+        color: white;
+    }
+
+    header {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+        padding: 18px;
+        text-align: center;
+        font-size: 26px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 650px;
+        margin: 20px auto;
+    }
+
+    textarea {
+        width: 100%;
+        height: 90px;
+        border-radius: 12px;
+        padding: 12px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background: #1c1c2e;
+        color: white;
+        box-shadow: 0 0 10px rgba(123, 47, 247, 0.3);
+    }
+
+    button {
+        margin-top: 10px;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        transform: scale(1.02);
+    }
+
+    .post {
+        background: #1c1c2e;
+        padding: 15px;
+        border-radius: 15px;
+        margin-top: 15px;
+        box-shadow: 0 0 12px rgba(123, 47, 247, 0.15);
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(10px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+
+    .time {
+        font-size: 10px;
+        color: gray;
+        margin-top: 5px;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .like {
+        cursor: pointer;
+        color: #bbb;
+        transition: 0.2s;
+    }
+
+    .like:hover {
+        color: #ff4d6d;
+    }
+
+    .liked {
+        color: #ff4d6d;
+    }
+
+    .delete {
+        cursor: pointer;
+        color: #888;
+    }
+
+    .delete:hover {
+        color: white;
+    }
+</style>
+</head>
+
+<body>
+
+<header>🟣 Buzzly</header>
+
+<div class="container">
+
+    <textarea id="postInput" placeholder="What's buzzing?"></textarea>
+    <button onclick="addPost()">Buzz It 🚀</button>
+
+    <div id="feed"></div>
+
+</div>
+
+<script>
+let posts = JSON.parse(localStorage.getItem("buzzlyPosts")) || [];
+
+function save() {
+    localStorage.setItem("buzzlyPosts", JSON.stringify(posts));
+}
+
+function renderPosts() {
+    const feed = document.getElementById("feed");
+    feed.innerHTML = "";
+
+    posts.slice().reverse().forEach((post, index) => {
+        const realIndex = posts.length - 1 - index;
+
+        const div = document.createElement("div");
+        div.className = "post";
+
+        div.innerHTML = `
+            <div>${post.text}</div>
+            <div class="time">${post.time}</div>
+
+            <div class="actions">
+                <div class="like ${post.liked ? "liked" : ""}" onclick="likePost(${realIndex})">
+                    ❤️ ${post.likes || 0}
+                </div>
+                <div class="delete" onclick="deletePost(${realIndex})">🗑 Delete</div>
+            </div>
+        `;
+
+        feed.appendChild(div);
+    });
+}
+
+function addPost() {
+    const input = document.getElementById("postInput");
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    posts.push({
+        text: text,
+        time: new Date().toLocaleString(),
+        likes: 0,
+        liked: false
+    });
+
+    input.value = "";
+    save();
+    renderPosts();
+}
+
+function likePost(i) {
+    posts[i].liked = !posts[i].liked;
+    posts[i].likes += posts[i].liked ? 1 : -1;
+    save();
+    renderPosts();
+}
+
+function deletePost(i) {
+    posts.splice(i, 1);
+    save();
+    renderPosts();
+}
+
+renderPosts();
+</script>
+
+</body>
+</html>
